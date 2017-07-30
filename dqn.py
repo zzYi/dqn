@@ -21,7 +21,7 @@ class DQN:
 
     def create_model(self):
         self.model = Sequential()
-        self.model.add(Dense(20, activation='relu', input_shape=(4,)))
+        self.model.add(Dense(20, activation='relu', input_shape=(self.state_dim,)))
         self.model.add(Dense(20, activation='relu'))
         self.model.add(Dense(self.action_dim, activation='linear'))
         self.model.compile(optimizer='Adam', loss='mse')
@@ -45,7 +45,7 @@ class DQN:
                 reward = reward_batch[i]
             else:
                 reward = reward_batch[i] + GAMMA * np.max(Q_value_batch[i])
-            target = [0, 0]
+            target = [0 for _ in range(self.action_dim)]
             target[action_batch[i]] = reward
             y_batch.append(target)
 
